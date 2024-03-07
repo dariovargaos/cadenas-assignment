@@ -14,8 +14,12 @@ export default function Navbar() {
 
       <Spacer />
 
-      <Link as={RouterNavLink}>Home</Link>
-      <Link as={RouterNavLink}>Products</Link>
+      <Link as={RouterNavLink} to="/">
+        Home
+      </Link>
+      <Link as={RouterNavLink} to="/products">
+        Products
+      </Link>
     </Flex>
   );
 }
