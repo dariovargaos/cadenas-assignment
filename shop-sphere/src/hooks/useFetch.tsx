@@ -1,37 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: string[];
-}
-
-interface ProductsResponse {
-  products: Product[];
-  total: number;
-}
-
-const fetchProducts = async (url: string): Promise<ProductsResponse> => {
+const fetchProducts = async <T,>(url: string): Promise<T> => {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error("Cannot fetch the data.");
+    throw new Error(response.statusText);
   }
 
   return response.json();
 };
 
-export const useFetch = (url: string) => {
-  return useQuery({
+export const useFetch = <T,>(url: string) => {
+  return useQuery<T>({
     queryKey: [url],
-    queryFn: () => fetchProducts(url),
+    queryFn: () => fetchProducts<T>(url),
   });
 };

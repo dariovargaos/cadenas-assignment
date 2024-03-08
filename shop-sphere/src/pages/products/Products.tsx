@@ -1,16 +1,38 @@
+import { Link as RouterLink } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
 import {
   Box,
   Flex,
   Heading,
   Image,
+  Link,
   Spacer,
   Text,
-  VStack,
 } from "@chakra-ui/react";
 
+interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  discountPercentage: number;
+  rating: number;
+  stock: number;
+  brand: string;
+  category: string;
+  thumbnail: string;
+  images: string[];
+}
+
+interface ProductsResponse {
+  products: Product[];
+  total: number;
+}
+
 export default function Products() {
-  const { data, isLoading, error } = useFetch("https://dummyjson.com/products");
+  const { data, isLoading, error } = useFetch<ProductsResponse>(
+    "https://dummyjson.com/products"
+  );
 
   console.log(data);
   return (
@@ -20,7 +42,7 @@ export default function Products() {
       </Heading>
       {isLoading && <Text>Loading...</Text>}
       {error && (
-        <Text color="red">Cannot fetch the data. Please try again.</Text>
+        <Text color="red">Could not fetch the data. Please try again.</Text>
       )}
       {data?.products.map((product) => (
         <Flex
@@ -37,7 +59,9 @@ export default function Products() {
           <Spacer />
 
           <Flex flexDir="column" gap={3} textAlign="center" w="100%">
-            <Text>{product.title}</Text>
+            <Link as={RouterLink} to={`/product/${product.id}`}>
+              {product.title}
+            </Link>
             <Text>{product.description}</Text>
           </Flex>
         </Flex>
