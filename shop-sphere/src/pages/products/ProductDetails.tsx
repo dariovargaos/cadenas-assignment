@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
-import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import ImageGallery, { ReactImageGalleryItem } from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
+import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 
 interface Product {
   id: number;
@@ -22,7 +24,20 @@ export default function ProductDetails() {
     `https://dummyjson.com/products/${id}`
   );
 
-  console.log(data, id);
+  const galleryImages = data?.images.map((image) => ({
+    original: image,
+    thumbnail: image,
+  }));
+
+  const imageStyle = (item: ReactImageGalleryItem) => (
+    <Flex justify="center" align="center" h="100%">
+      <Image
+        src={item.original}
+        alt={item.original}
+        style={{ maxWidth: "100%", maxHeight: "80%", objectFit: "contain" }}
+      />
+    </Flex>
+  );
 
   return (
     <Box p={2}>
@@ -33,14 +48,17 @@ export default function ProductDetails() {
         <Flex flexDir="column" gap={4}>
           <Heading>{data.title}</Heading>
 
-          <Flex justify="center">
-            {data.images.map((image, index) => (
-              <Image key={index} src={image} w="40%" />
-            ))}
-          </Flex>
+          {galleryImages && galleryImages.length > 0 && (
+            <ImageGallery
+              items={galleryImages}
+              renderItem={imageStyle}
+              showPlayButton={false}
+              useBrowserFullscreen={false}
+            />
+          )}
 
           <Text>
-            <b>Description:</b> {data?.description}.
+            <b>Description:</b> {data?.description}
           </Text>
 
           <Text>
@@ -64,6 +82,7 @@ export default function ProductDetails() {
           </Text>
         </Flex>
       )}
+      <Button colorScheme="blackAlpha">Back</Button>
     </Box>
   );
 }
