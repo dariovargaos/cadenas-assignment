@@ -4,14 +4,16 @@ import { useFetchProductDetails } from "../../hooks/useFetchProductDetails";
 import ImageGallery, { ReactImageGalleryItem } from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import {
-  Box,
-  Button,
   Flex,
   Heading,
+  IconButton,
   Image,
   Progress,
   Text,
 } from "@chakra-ui/react";
+
+//icons
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id?: string }>();
@@ -81,15 +83,15 @@ export default function ProductDetails() {
           </Text>
         </Flex>
       )}
-      <Button
+      <IconButton
+        aria-label="go back button"
+        icon={<ArrowBackIcon />}
         onClick={() =>
           navigate(location.state?.from ? location.state.from : "/products/1")
         }
         colorScheme="telegram"
-        w="10%"
-      >
-        Back
-      </Button>
+        w="5%"
+      />
     </Flex>
   );
 }

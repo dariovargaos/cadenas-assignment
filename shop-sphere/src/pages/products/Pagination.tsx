@@ -1,5 +1,8 @@
 import { NavLink as RouterNavLink, useNavigate } from "react-router-dom";
-import { Button, Flex, Link } from "@chakra-ui/react";
+import { Flex, IconButton, Link } from "@chakra-ui/react";
+
+//icons
+import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 interface PaginationProps {
   limit: number;
@@ -20,13 +23,13 @@ export default function Pagination({
   }
   return (
     <Flex px={2}>
-      <Button
+      <IconButton
+        aria-label="previous page"
+        icon={<ArrowLeftIcon />}
         onClick={() => navigate(`/products/${Math.max(page - 1, 1)}`)}
         isDisabled={page === 1}
         colorScheme="telegram"
-      >
-        Previous
-      </Button>
+      />
       <Flex w="100%" justify="center" gap={5}>
         {pageNumbers.map((pageNumber) => (
           <Link
@@ -40,15 +43,15 @@ export default function Pagination({
           </Link>
         ))}
       </Flex>
-      <Button
+      <IconButton
+        aria-label="next page"
+        icon={<ArrowRightIcon />}
         onClick={() =>
           navigate(`/products/${Math.min(page + 1, pageNumbers.length)}`)
         }
         isDisabled={page >= Math.ceil(total / limit)}
         colorScheme="telegram"
-      >
-        Next
-      </Button>
+      />
     </Flex>
   );
 }
