@@ -83,15 +83,17 @@ export default function ProductDetails() {
           </Text>
         </Flex>
       )}
-      <IconButton
-        aria-label="go back button"
-        icon={<ArrowBackIcon />}
-        onClick={() =>
-          navigate(location.state?.from ? location.state.from : "/products/1")
-        }
-        colorScheme="telegram"
-        w="5%"
-      />
+      {!isLoading && (
+        <IconButton
+          aria-label="go back button"
+          icon={<ArrowBackIcon />}
+          onClick={() =>
+            navigate(location.state?.from ? location.state.from : "/products/1")
+          }
+          colorScheme="telegram"
+          w="5%"
+        />
+      )}
     </Flex>
   );
 }

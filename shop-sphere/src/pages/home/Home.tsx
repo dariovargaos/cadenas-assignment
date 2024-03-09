@@ -3,7 +3,9 @@ import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 export default function Home() {
   return (
     <Flex as="main" flexDir="column" gap={5} p={2}>
-      <Heading as="h2">Welcome</Heading>
+      <Heading as="h2" size="lg">
+        Welcome
+      </Heading>
       <Text>Only quality products from quality shop...</Text>
       <Image src="https://via.placeholder.com/1200x200" alt="site banner" />
       <Text>

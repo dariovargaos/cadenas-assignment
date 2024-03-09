@@ -1,5 +1,5 @@
 import { NavLink as RouterNavLink, useNavigate } from "react-router-dom";
-import { Flex, IconButton, Link } from "@chakra-ui/react";
+import { Flex, IconButton, Link, useBreakpointValue } from "@chakra-ui/react";
 
 //icons
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
@@ -21,6 +21,11 @@ export default function Pagination({
   for (let i = 1; i <= Math.ceil(total / limit); i++) {
     pageNumbers.push(i);
   }
+
+  const isSmallScreen = useBreakpointValue({
+    base: true,
+    md: false,
+  });
   return (
     <Flex px={2}>
       <IconButton
@@ -29,8 +34,14 @@ export default function Pagination({
         onClick={() => navigate(`/products/${Math.max(page - 1, 1)}`)}
         isDisabled={page === 1}
         colorScheme="telegram"
+        variant="ghost"
       />
-      <Flex w="100%" justify="center" gap={5}>
+      <Flex
+        w="100%"
+        justify="center"
+        align="center"
+        gap={isSmallScreen ? 4 : 5}
+      >
         {pageNumbers.map((pageNumber) => (
           <Link
             key={pageNumber}
@@ -38,6 +49,7 @@ export default function Pagination({
             to={`/products/${pageNumber}`}
             _hover={{ color: "#0088CC" }}
             _activeLink={{ color: "#0088CC" }}
+            fontSize="lg"
           >
             {pageNumber}
           </Link>
@@ -51,6 +63,7 @@ export default function Pagination({
         }
         isDisabled={page >= Math.ceil(total / limit)}
         colorScheme="telegram"
+        variant="ghost"
       />
     </Flex>
   );

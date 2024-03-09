@@ -69,7 +69,7 @@ export default function Products() {
             >
               {product.title}
             </Link>
-            <Text>{product.description}</Text>
+            <Text fontSize="md">{product.description}</Text>
           </Flex>
         </Flex>
       ))}
