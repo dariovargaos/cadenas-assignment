@@ -4,16 +4,22 @@ import { Flex, IconButton, Link, useBreakpointValue } from "@chakra-ui/react";
 //icons
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
+interface CategoryOption {
+  value: string;
+  label: string;
+}
 interface PaginationProps {
   limit: number;
   total: number | undefined;
   page: number;
+  selectedCategory: CategoryOption | null;
 }
 
 export default function Pagination({
   limit,
   total = 0,
   page,
+  selectedCategory,
 }: PaginationProps) {
   const pageNumbers = [];
   const navigate = useNavigate();
@@ -32,7 +38,7 @@ export default function Pagination({
         aria-label="previous page"
         icon={<ArrowLeftIcon />}
         onClick={() => navigate(`/products/${Math.max(page - 1, 1)}`)}
-        isDisabled={page === 1}
+        isDisabled={page === 1 || selectedCategory !== null}
         colorScheme="telegram"
         variant="ghost"
       />

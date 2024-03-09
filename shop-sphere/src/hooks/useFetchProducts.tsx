@@ -19,26 +19,38 @@ interface ProductsResponse {
   total: number | undefined;
 }
 
-const url = "https://dummyjson.com/products";
-
 const fetchProducts = async (
   page: number = 1,
-  limit: number = 10
+  limit: number = 10,
+  category?: string
 ): Promise<ProductsResponse> => {
-  const response = await fetch(
-    `${url}?skip=${(page - 1) * limit}&limit=${limit}`
-  );
+  let url = "https://dummyjson.com/products";
+
+  if (category) {
+    url = `https://dummyjson.com/products/category/${encodeURIComponent(
+      category
+    )}`;
+  } else {
+    url += `?skip=${(page - 1) * limit}&limit=${limit}`;
+  }
+
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(response.statusText);
   }
 
+  console.log(`Fetching products for category: ${category}`);
   return response.json();
 };
 
-export const useFetchProducts = (page: number, limit: number) => {
+export const useFetchProducts = (
+  page: number,
+  limit: number,
+  category?: string
+) => {
   return useQuery({
-    queryKey: ["products", page],
-    queryFn: () => fetchProducts(page, limit),
+    queryKey: ["products", page, limit, category],
+    queryFn: () => fetchProducts(page, limit, category),
   });
 };

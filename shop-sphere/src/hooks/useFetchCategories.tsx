@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-const fetchCategories = async () => {
+const fetchCategories = async (): Promise<string[]> => {
   const response = await fetch("https://dummyjson.com/products/categories");
 
   if (!response.ok) {

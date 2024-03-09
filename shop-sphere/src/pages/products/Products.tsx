@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
+import Select, { SingleValue } from "react-select";
 import { useFetchProducts } from "../../hooks/useFetchProducts";
+import { useFetchCategories } from "../../hooks/useFetchCategories";
 import {
   Flex,
   Heading,
@@ -14,11 +16,27 @@ import {
 //components
 import Pagination from "./Pagination";
 
+interface CategoryOption {
+  value: string;
+  label: string;
+}
+
 export default function Products() {
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryOption | null>(null);
   const [page, setPage] = useState<number>(1);
   const { pageNumber } = useParams<{ pageNumber?: string }>();
   const limit: number = 10;
-  const { data, isLoading, error } = useFetchProducts(page, limit);
+  const { data, isLoading, error } = useFetchProducts(
+    page,
+    limit,
+    selectedCategory?.value
+  );
+  const {
+    data: categories,
+    isLoading: categoryLoading,
+    error: categoryError,
+  } = useFetchCategories();
 
   useEffect(() => {
     setPage(pageNumber ? parseInt(pageNumber, 10) : 1);
@@ -27,12 +45,35 @@ export default function Products() {
     window.scrollTo(0, 0);
   }, [pageNumber]);
 
-  console.log(data);
+  const categoryOptions = categories?.map((category: string) => ({
+    value: category,
+    label: category.charAt(0).toUpperCase() + category.slice(1),
+  }));
+
+  const handleCategoryChange = (
+    selectedOption: SingleValue<CategoryOption>
+  ) => {
+    setSelectedCategory(selectedOption);
+  };
+
   return (
     <Flex flexDir="column" p={2} gap={5}>
       <Heading as="h2" size="lg">
         Products for your every need...
       </Heading>
+
+      {categoryLoading && !categoryError ? (
+        <Progress isIndeterminate colorScheme="telegram" />
+      ) : (
+        <Select
+          options={categoryOptions}
+          onChange={handleCategoryChange}
+          value={selectedCategory}
+          placeholder="Select a category"
+          isClearable
+        />
+      )}
+
       {isLoading && <Progress isIndeterminate colorScheme="telegram" />}
       {error && (
         <Text color="red">Could not fetch the data. Please try again.</Text>
@@ -75,7 +116,12 @@ export default function Products() {
       ))}
 
       {!isLoading && (
-        <Pagination limit={limit} total={data?.total} page={page} />
+        <Pagination
+          limit={limit}
+          total={data?.total}
+          page={page}
+          selectedCategory={selectedCategory}
+        />
       )}
     </Flex>
   );
