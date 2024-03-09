@@ -13,6 +13,8 @@ export default function Pagination({ limit, total, page }) {
       <Button
         onClick={() => navigate(`/products/${Math.max(page - 1, 1)}`)}
         isDisabled={page === 1}
+        colorScheme="telegram"
+        color="white"
       >
         Previous
       </Button>
@@ -22,8 +24,8 @@ export default function Pagination({ limit, total, page }) {
             <Link
               as={RouterNavLink}
               to={`/products/${pageNumber}`}
-              _hover={{ color: "red" }}
-              _activeLink={{ color: "green" }}
+              _hover={{ color: "#0088CC" }}
+              _activeLink={{ color: "#0088CC" }}
             >
               {pageNumber}
             </Link>
@@ -35,6 +37,8 @@ export default function Pagination({ limit, total, page }) {
           navigate(`/products/${Math.min(page + 1, pageNumbers.length)}`)
         }
         isDisabled={page >= Math.ceil(total / limit)}
+        colorScheme="telegram"
+        color="white"
       >
         Next
       </Button>

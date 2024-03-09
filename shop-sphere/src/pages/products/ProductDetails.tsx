@@ -1,30 +1,15 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useFetch } from "../../hooks/useFetch";
+import { useFetchProductDetails } from "../../hooks/useFetchProductDetails";
 import ImageGallery, { ReactImageGalleryItem } from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: string[];
-}
-
 export default function ProductDetails() {
-  const { id } = useParams<string>();
+  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const { data, isLoading, error } = useFetch<Product>(
-    `https://dummyjson.com/products/${id}`
-  );
+
+  const { data, isLoading, error } = useFetchProductDetails(id);
 
   const galleryImages = data?.images.map((image) => ({
     original: image,

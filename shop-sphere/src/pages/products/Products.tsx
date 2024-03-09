@@ -1,47 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
-import { useFetch } from "../../hooks/useFetch";
-import {
-  Box,
-  Flex,
-  Heading,
-  Image,
-  Link,
-  Spacer,
-  Text,
-} from "@chakra-ui/react";
+import { useFetchProducts } from "../../hooks/useFetchProducts";
+import { Flex, Heading, Image, Link, Spacer, Text } from "@chakra-ui/react";
 
 //components
 import Pagination from "./Pagination";
 
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: string[];
-}
-
-interface ProductsResponse {
-  products: Product[];
-  total: number | undefined;
-}
-
 export default function Products() {
-  const [page, setPage] = useState(1);
-  const { pageNumber } = useParams();
-  const limit = 10;
-  const { data, isLoading, error } = useFetch<ProductsResponse>(
-    "https://dummyjson.com/products",
-    page,
-    limit
-  );
+  const [page, setPage] = useState<number>(1);
+  const { pageNumber } = useParams<{ pageNumber?: string }>();
+  const limit: number = 10;
+  const { data, isLoading, error } = useFetchProducts(page, limit);
 
   useEffect(() => {
     setPage(pageNumber ? parseInt(pageNumber, 10) : 1);
@@ -52,7 +21,7 @@ export default function Products() {
 
   console.log(data);
   return (
-    <Box p={2}>
+    <Flex flexDir="column" p={2} gap={5}>
       <Heading as="h1" size="lg">
         Products for your every need...
       </Heading>
@@ -66,8 +35,7 @@ export default function Products() {
           p={2}
           align="center"
           gap={3}
-          borderTop="1px solid black"
-          borderBottom="1px solid black"
+          borderTop="1px solid #e2e2e2"
           overflow="hidden"
         >
           <Image src={product.thumbnail} alt="Product thumbnail" w="50%" />
@@ -88,6 +56,6 @@ export default function Products() {
       ))}
 
       <Pagination limit={limit} total={data?.total} page={page} />
-    </Box>
+    </Flex>
   );
 }
