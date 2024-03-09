@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
 import ImageGallery, { ReactImageGalleryItem } from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -20,6 +20,8 @@ interface Product {
 
 export default function ProductDetails() {
   const { id } = useParams<string>();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { data, isLoading, error } = useFetch<Product>(
     `https://dummyjson.com/products/${id}`
   );
@@ -82,7 +84,14 @@ export default function ProductDetails() {
           </Text>
         </Flex>
       )}
-      <Button colorScheme="blackAlpha">Back</Button>
+      <Button
+        onClick={() =>
+          navigate(location.state?.from ? location.state.from : "/products/1")
+        }
+        colorScheme="blackAlpha"
+      >
+        Back
+      </Button>
     </Box>
   );
 }

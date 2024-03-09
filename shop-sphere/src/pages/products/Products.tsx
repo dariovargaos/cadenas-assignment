@@ -1,4 +1,5 @@
-import { Link as RouterLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
 import {
   Box,
@@ -9,6 +10,9 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
+
+//components
+import Pagination from "./Pagination";
 
 interface Product {
   id: number;
@@ -26,13 +30,25 @@ interface Product {
 
 interface ProductsResponse {
   products: Product[];
-  total: number;
+  total: number | undefined;
 }
 
 export default function Products() {
+  const [page, setPage] = useState(1);
+  const { pageNumber } = useParams();
+  const limit = 10;
   const { data, isLoading, error } = useFetch<ProductsResponse>(
-    "https://dummyjson.com/products"
+    "https://dummyjson.com/products",
+    page,
+    limit
   );
+
+  useEffect(() => {
+    setPage(pageNumber ? parseInt(pageNumber, 10) : 1);
+
+    //scroll to the top of the page after page number changes
+    window.scrollTo(0, 0);
+  }, [pageNumber]);
 
   console.log(data);
   return (
@@ -59,13 +75,19 @@ export default function Products() {
           <Spacer />
 
           <Flex flexDir="column" gap={3} textAlign="center" w="100%">
-            <Link as={RouterLink} to={`/product/${product.id}`}>
+            <Link
+              as={RouterLink}
+              to={`/product/${product.id}`}
+              state={{ from: `/products/${pageNumber}` }}
+            >
               {product.title}
             </Link>
             <Text>{product.description}</Text>
           </Flex>
         </Flex>
       ))}
+
+      <Pagination limit={limit} total={data?.total} page={page} />
     </Box>
   );
 }

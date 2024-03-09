@@ -17,7 +17,7 @@ export default function Navbar() {
       <Link as={RouterNavLink} to="/">
         Home
       </Link>
-      <Link as={RouterNavLink} to="/products">
+      <Link as={RouterNavLink} to="/products/1">
         Products
       </Link>
     </Flex>

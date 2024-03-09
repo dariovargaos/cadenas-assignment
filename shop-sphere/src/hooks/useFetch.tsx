@@ -1,7 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 
-const fetchProducts = async <T,>(url: string): Promise<T> => {
-  const response = await fetch(url);
+const fetchProducts = async <T,>(
+  url: string,
+  page: number = 1,
+  limit: number = 10
+): Promise<T> => {
+  const response = await fetch(
+    `${url}?skip=${(page - 1) * limit}&limit=${limit}`
+  );
 
   if (!response.ok) {
     throw new Error(response.statusText);
@@ -10,9 +16,9 @@ const fetchProducts = async <T,>(url: string): Promise<T> => {
   return response.json();
 };
 
-export const useFetch = <T,>(url: string) => {
+export const useFetch = <T,>(url: string, page: number, limit: number) => {
   return useQuery<T>({
-    queryKey: [url],
-    queryFn: () => fetchProducts<T>(url),
+    queryKey: [url, page],
+    queryFn: () => fetchProducts<T>(url, page, limit),
   });
 };
