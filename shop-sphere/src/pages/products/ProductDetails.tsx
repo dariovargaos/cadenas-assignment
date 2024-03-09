@@ -39,13 +39,13 @@ export default function ProductDetails() {
   );
 
   return (
-    <Box p={2}>
+    <Flex flexDir="column" p={2} gap={2}>
       {isLoading && <Progress isIndeterminate colorScheme="telegram" />}
       {error && <Text>Could not fetch the data. Please try again.</Text>}
 
       {data && (
         <Flex flexDir="column" gap={4}>
-          <Heading>{data.title}</Heading>
+          <Heading as="h2">{data.title}</Heading>
 
           {galleryImages && galleryImages.length > 0 && (
             <ImageGallery
@@ -86,9 +86,10 @@ export default function ProductDetails() {
           navigate(location.state?.from ? location.state.from : "/products/1")
         }
         colorScheme="telegram"
+        w="10%"
       >
         Back
       </Button>
-    </Box>
+    </Flex>
   );
 }

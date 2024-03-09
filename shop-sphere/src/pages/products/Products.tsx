@@ -30,7 +30,7 @@ export default function Products() {
   console.log(data);
   return (
     <Flex flexDir="column" p={2} gap={5}>
-      <Heading as="h1" size="lg">
+      <Heading as="h2" size="lg">
         Products for your every need...
       </Heading>
       {isLoading && <Progress isIndeterminate colorScheme="telegram" />}
@@ -65,6 +65,7 @@ export default function Products() {
               state={{
                 from: `/products/${pageNumber}`,
               }}
+              color="#0088CC"
             >
               {product.title}
             </Link>

@@ -1,5 +1,5 @@
 import { NavLink as RouterNavLink, useNavigate } from "react-router-dom";
-import { Button, Flex, Link, List, ListItem } from "@chakra-ui/react";
+import { Button, Flex, Link } from "@chakra-ui/react";
 
 interface PaginationProps {
   limit: number;
@@ -19,7 +19,7 @@ export default function Pagination({
     pageNumbers.push(i);
   }
   return (
-    <Flex>
+    <Flex px={2}>
       <Button
         onClick={() => navigate(`/products/${Math.max(page - 1, 1)}`)}
         isDisabled={page === 1}
@@ -27,20 +27,19 @@ export default function Pagination({
       >
         Previous
       </Button>
-      <List display="flex" w="100%" justifyContent="center" gap={5}>
+      <Flex w="100%" justify="center" gap={5}>
         {pageNumbers.map((pageNumber) => (
-          <ListItem key={pageNumber}>
-            <Link
-              as={RouterNavLink}
-              to={`/products/${pageNumber}`}
-              _hover={{ color: "#0088CC" }}
-              _activeLink={{ color: "#0088CC" }}
-            >
-              {pageNumber}
-            </Link>
-          </ListItem>
+          <Link
+            key={pageNumber}
+            as={RouterNavLink}
+            to={`/products/${pageNumber}`}
+            _hover={{ color: "#0088CC" }}
+            _activeLink={{ color: "#0088CC" }}
+          >
+            {pageNumber}
+          </Link>
         ))}
-      </List>
+      </Flex>
       <Button
         onClick={() =>
           navigate(`/products/${Math.min(page + 1, pageNumbers.length)}`)

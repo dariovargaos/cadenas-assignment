@@ -1,5 +1,5 @@
 import { NavLink as RouterNavLink } from "react-router-dom";
-import { Flex, Heading, Link, Spacer } from "@chakra-ui/react";
+import { Flex, Heading, Image, Link, Spacer } from "@chakra-ui/react";
 
 export default function Navbar() {
   return (
@@ -11,13 +11,24 @@ export default function Navbar() {
       borderBottom="1px solid #e2e2e2"
     >
       <Heading as="h1">Shop Sphere</Heading>
+      <Image src="/sphere.png" alt="shop sphere logo" />
 
       <Spacer />
 
-      <Link as={RouterNavLink} to="/">
+      <Link
+        as={RouterNavLink}
+        to="/"
+        _activeLink={{ color: "#0088CC" }}
+        _hover={{ textDecoration: "none", color: "#0088CC" }}
+      >
         Home
       </Link>
-      <Link as={RouterNavLink} to="/products/1">
+      <Link
+        as={RouterNavLink}
+        to="/products/1"
+        _activeLink={{ color: "#0088CC" }}
+        _hover={{ textDecoration: "none", color: "#0088CC" }}
+      >
         Products
       </Link>
     </Flex>
