@@ -51,7 +51,6 @@ export default function Products() {
             to={`/product/${product.id}`}
             state={{
               from: `/products/${pageNumber}`,
-              scrollPosition: window.scrollY,
             }}
           >
             <Image src={product.thumbnail} alt="Product thumbnail" />
@@ -63,7 +62,9 @@ export default function Products() {
             <Link
               as={RouterLink}
               to={`/product/${product.id}`}
-              state={{ from: `/products/${pageNumber}` }}
+              state={{
+                from: `/products/${pageNumber}`,
+              }}
             >
               {product.title}
             </Link>
