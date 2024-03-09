@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { useFetchProducts } from "../../hooks/useFetchProducts";
-import { Flex, Heading, Image, Link, Spacer, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  Image,
+  Link,
+  Progress,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
 
 //components
 import Pagination from "./Pagination";
@@ -15,7 +23,7 @@ export default function Products() {
   useEffect(() => {
     setPage(pageNumber ? parseInt(pageNumber, 10) : 1);
 
-    //scroll to the top of the page after page number changes
+    //scroll to the top of the page after changing page number
     window.scrollTo(0, 0);
   }, [pageNumber]);
 
@@ -25,7 +33,7 @@ export default function Products() {
       <Heading as="h1" size="lg">
         Products for your every need...
       </Heading>
-      {isLoading && <Text>Loading...</Text>}
+      {isLoading && <Progress isIndeterminate colorScheme="telegram" />}
       {error && (
         <Text color="red">Could not fetch the data. Please try again.</Text>
       )}
@@ -38,7 +46,16 @@ export default function Products() {
           borderTop="1px solid #e2e2e2"
           overflow="hidden"
         >
-          <Image src={product.thumbnail} alt="Product thumbnail" w="50%" />
+          <Link
+            as={RouterLink}
+            to={`/product/${product.id}`}
+            state={{
+              from: `/products/${pageNumber}`,
+              scrollPosition: window.scrollY,
+            }}
+          >
+            <Image src={product.thumbnail} alt="Product thumbnail" />
+          </Link>
 
           <Spacer />
 
@@ -55,7 +72,9 @@ export default function Products() {
         </Flex>
       ))}
 
-      <Pagination limit={limit} total={data?.total} page={page} />
+      {!isLoading && (
+        <Pagination limit={limit} total={data?.total} page={page} />
+      )}
     </Flex>
   );
 }

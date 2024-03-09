@@ -1,15 +1,27 @@
+import { useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useFetchProductDetails } from "../../hooks/useFetchProductDetails";
 import ImageGallery, { ReactImageGalleryItem } from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
-import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Progress,
+  Text,
+} from "@chakra-ui/react";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-
   const { data, isLoading, error } = useFetchProductDetails(id);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
 
   const galleryImages = data?.images.map((image) => ({
     original: image,
@@ -28,7 +40,7 @@ export default function ProductDetails() {
 
   return (
     <Box p={2}>
-      {isLoading && <Text>Loading...</Text>}
+      {isLoading && <Progress isIndeterminate colorScheme="telegram" />}
       {error && <Text>Could not fetch the data. Please try again.</Text>}
 
       {data && (
@@ -73,7 +85,7 @@ export default function ProductDetails() {
         onClick={() =>
           navigate(location.state?.from ? location.state.from : "/products/1")
         }
-        colorScheme="blackAlpha"
+        colorScheme="telegram"
       >
         Back
       </Button>

@@ -1,7 +1,17 @@
 import { NavLink as RouterNavLink, useNavigate } from "react-router-dom";
 import { Button, Flex, Link, List, ListItem } from "@chakra-ui/react";
 
-export default function Pagination({ limit, total, page }) {
+interface PaginationProps {
+  limit: number;
+  total: number | undefined;
+  page: number;
+}
+
+export default function Pagination({
+  limit,
+  total = 0,
+  page,
+}: PaginationProps) {
   const pageNumbers = [];
   const navigate = useNavigate();
 
@@ -14,7 +24,6 @@ export default function Pagination({ limit, total, page }) {
         onClick={() => navigate(`/products/${Math.max(page - 1, 1)}`)}
         isDisabled={page === 1}
         colorScheme="telegram"
-        color="white"
       >
         Previous
       </Button>
@@ -38,7 +47,6 @@ export default function Pagination({ limit, total, page }) {
         }
         isDisabled={page >= Math.ceil(total / limit)}
         colorScheme="telegram"
-        color="white"
       >
         Next
       </Button>
