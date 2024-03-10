@@ -4,6 +4,7 @@ import Select, { SingleValue } from "react-select";
 import { useFetchProducts } from "../../hooks/useFetchProducts";
 import { useFetchCategories } from "../../hooks/useFetchCategories";
 import {
+  Divider,
   Flex,
   Heading,
   Image,
@@ -32,11 +33,7 @@ export default function Products() {
     limit,
     selectedCategory?.value
   );
-  const {
-    data: categories,
-    isLoading: categoryLoading,
-    error: categoryError,
-  } = useFetchCategories();
+  const { data: categories, error: categoryError } = useFetchCategories();
 
   useEffect(() => {
     setPage(pageNumber ? parseInt(pageNumber, 10) : 1);
@@ -62,9 +59,7 @@ export default function Products() {
         Products for your every need...
       </Heading>
 
-      {categoryLoading && !categoryError ? (
-        <Progress isIndeterminate colorScheme="telegram" />
-      ) : (
+      {!isLoading && !categoryError && (
         <Select
           options={categoryOptions}
           onChange={handleCategoryChange}
@@ -79,40 +74,46 @@ export default function Products() {
         <Text color="red">Could not fetch the data. Please try again.</Text>
       )}
       {data?.products.map((product) => (
-        <Flex
-          key={product.id}
-          p={2}
-          align="center"
-          gap={3}
-          borderTop="1px solid #e2e2e2"
-          overflow="hidden"
-        >
-          <Link
-            as={RouterLink}
-            to={`/product/${product.id}`}
-            state={{
-              from: `/products/${pageNumber}`,
-            }}
+        <>
+          <Flex
+            key={product.id}
+            flexDir={["column", "column", "row"]}
+            p={2}
+            align="center"
+            gap={3}
+            overflow="hidden"
           >
-            <Image src={product.thumbnail} alt="Product thumbnail" />
-          </Link>
-
-          <Spacer />
-
-          <Flex flexDir="column" gap={3} textAlign="center" w="100%">
             <Link
               as={RouterLink}
               to={`/product/${product.id}`}
               state={{
                 from: `/products/${pageNumber}`,
               }}
-              color="#0088CC"
             >
-              {product.title}
+              <Image src={product.thumbnail} alt="Product thumbnail" />
             </Link>
-            <Text fontSize="md">{product.description}</Text>
+
+            <Spacer />
+
+            <Flex flexDir="column" gap={3} textAlign="center" w="100%">
+              <Link
+                as={RouterLink}
+                to={`/product/${product.id}`}
+                state={{
+                  from: `/products/${pageNumber}`,
+                }}
+                color="#0088CC"
+                fontWeight="600"
+                fontSize="lg"
+              >
+                {product.title}
+              </Link>
+              <Text fontSize="md">{product.description}</Text>
+            </Flex>
           </Flex>
-        </Flex>
+
+          <Divider />
+        </>
       ))}
 
       {!isLoading && (
