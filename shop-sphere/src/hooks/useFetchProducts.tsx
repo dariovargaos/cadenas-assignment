@@ -40,7 +40,6 @@ const fetchProducts = async (
     throw new Error(response.statusText);
   }
 
-  console.log(`Fetching products for category: ${category}`);
   return response.json();
 };
 
