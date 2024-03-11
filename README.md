@@ -1,5 +1,5 @@
-# Sphere Shop
-Welcome to Sphere Shop!
+# Shop Sphere
+Welcome to Shop Sphere!
 This repository contains code for simple web application showing products.
 
 ## What can you do?
